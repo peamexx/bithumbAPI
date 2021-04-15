@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>빗썸시세확인</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 20px;
+        }
+
+        .setting {
+            margin-bottom: 30px;
+        }
+
+        button {
+            all: unset;
+            width: 10%;
+            padding: 5px;
+            margin-right: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .reloadBtn {
+            background-color: slategrey;
+            color: white;
+        }
+
+        .nameRevBtn {
+            background-color: teal;
+            color: white;
+        }
+
+        table {
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
+
+        table tr th,
+        table tr td {
+            padding: 10px;
+            border: 1px solid black;
+        }
+
+        table tr td {
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="setting">
+            <button class="reloadBtn">새로고침</button>
+            <button class="nameRevBtn">종목명 (z - a)</button>
+        </div>
+        <div class="contents">
+            <table>
+                <tr>
+                    <td colspan="5">총 개수</td>
+                    <td class="len"></td>
+                </tr>
+                <tr>
+                    <th>종목명</th>
+                    <th>현재가</th>
+                    <th>거래대금(최근 24시간)</th>
+                    <th>거래량(최근 24시간)</th>
+                    <th>거래대금</th>
+                    <th>거래량</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script>
+        const request = new XMLHttpRequest();
+        const url = "https://api.bithumb.com/public/ticker/ALL";
+        request.open("GET", url, false);
+        request.send();
+        let obj = JSON.parse(request.responseText);
+
+        // 배열화
+        let standard = Object.entries(obj.data);
+
+        // ======== api 이름 ============
+        // acc_trade_value 거래대금
+        // acc_trade_value_24H 거래대금(최근 24시간)
+        // closing_price 종가
+        // fluctate_24H 전일대비(금액)
+        // fluctate_rate_24H 전일대비(%)
+        // max_price 고가
+        // min_price 저가
+        // opening_price 시가
+        // prev_closing_price 전일종가
+        // units_traded 거래량
+        // units_traded_24H 거래량(최근 24시간)
+
+        // 이름 a ---> z 정렬
+        let anNameRev = standard.sort().reverse();
+
+        // 이름 z ---> a 정렬
+        let anName = standard.sort();
+
+
+        let tbody = document.querySelector('tbody');
+
+
+        // 총 개수
+        let len = document.querySelector('.len');
+        len.textContent = standard.length;
+
+        // console.log(standard);
+        // console.log(anName[0]); // ["AAVE", {…}]
+        // console.log(anName[0][0]); // AAVE
+        // console.log(anName[0][1]); // {opening_price: "498000", ...}
+
+
+        standard.map((item) => {
+            // 최종 한줄
+            let tr = document.createElement('tr');
+            // 종목
+            let td = document.createElement('td');
+            if (item[0] === 'date') {
+                return;
+            } else {
+                td.innerHTML = item[0];
+                tr.append(td);
+
+                // 나머지 테이블
+                for (let i = 0; i < 5; i++) {
+                    let td = document.createElement('td');
+                    if (i === 0) {
+                        // 현재가 구해오기
+                        const request = new XMLHttpRequest();
+                        let url = "https://api.bithumb.com/public/transaction_history/";
+                        let symbol = item[0];
+                        url = url + symbol;
+                        request.open("GET", url, false);
+                        request.send();
+                        let obj1 = JSON.parse(request.responseText);
+
+                        // 배열화
+                        let standard1 = Object.entries(obj1.data);
+
+                        td.innerHTML = standard1[19][1].price;
+                    } else if (i === 1) {
+                        td.innerHTML = parseInt(item[1].acc_trade_value_24H).toLocaleString();
+                    } else if (i === 2) {
+                        td.innerHTML = parseInt(item[1].units_traded_24H).toLocaleString();
+                    } else if (i === 3) {
+                        td.innerHTML = parseInt(item[1].units_traded).toLocaleString();
+                    } else if (i === 4) {
+                        td.innerHTML = parseInt(item[1].units_traded).toLocaleString();
+                    }
+                    tr.append(td);
+                }
+                tbody.append(tr);
+            }
+        })
+
+        // let nameRevBtn = document.querySelector('.nameRevBtn');
+    </script>
+</body>
+
+</html>
