@@ -17,7 +17,7 @@
 // console.log(anName[0][0]); // AAVE
 // console.log(anName[0][1]); // {opening_price: "498000", ...}
 
-// ======================================================================== START
+// ==================================================================================== START
 
 // api 불러오기
 const request = new XMLHttpRequest();
@@ -33,7 +33,7 @@ let standard = Object.entries(obj.data);
 import coinName from './coinName.js';
 let coinNameArr = coinName;
 
-let tbody = document.querySelector('tbody');
+let table = document.querySelector('table');
 let symbolSortABtn = document.querySelector('.symbolSortABtn');
 let symbolSortZBtn = document.querySelector('.symbolSortZBtn');
 
@@ -46,14 +46,23 @@ symbolSortZBtn.addEventListener('click', makeTable); // 심볼 z ---> a 정렬
 
 
 function makeTable() {
-    // 구분
+    // 버튼별 데이터 정렬 구분
     if(this.className === 'symbolSortABtn') {
         standard = standard.sort();
     } else if(this.className === 'symbolSortZBtn') {
         standard = standard.sort().reverse();
     }
 
+    // 기존 데이터 삭제
+    let tbody = document.querySelector('tbody');
+    tbody.remove();
+
     // 데이터 만들기
+    setData();
+};
+
+function setData() {
+    let tbody = document.createElement('tbody');
     standard.map((item) => {
         let tr = document.createElement('tr');
         let td = document.createElement('td');
@@ -98,6 +107,7 @@ function makeTable() {
                 tr.append(td);
             }
             tbody.append(tr);
+            table.append(tbody);
         }
     })
 };
