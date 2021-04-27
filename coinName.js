@@ -758,4 +758,22 @@ export default [{
         "symbol": "TRUE",
         "erc": "0"
     }
+    ,
+    {
+        "name": "맵프로토콜",
+        "symbol": "MAP",
+        "erc": "0"
+    }
+    ,
+    {
+        "name": "어셈블프로토콜",
+        "symbol": "ASM",
+        "erc": "0"
+    }
+    ,
+    {
+        "name": "아로나와토큰",
+        "symbol": "ARW",
+        "erc": "0"
+    }
 ]
