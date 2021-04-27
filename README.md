@@ -1,6 +1,6 @@
 # bithumbAPI
 
-![image](https://user-images.githubusercontent.com/38338103/114997084-73ee7a80-9eda-11eb-868b-f81f46d72673.png)
+![image](https://user-images.githubusercontent.com/38338103/116196505-913f0680-a76e-11eb-95b2-b42a2b0f27dc.png)
 
 > 빗썸API 활용한 가상자산 데이터 확인 페이지
 ### 제작중...
@@ -24,4 +24,4 @@ ___
 ### 추가하고 싶은 기능 👀
 - [X] 심볼 옆에 종목명(한글) json활용하여 넣기
 - [ ] 검색기능
-- [ ] 데이터 랜더링
+- [ ] 데이터 랜더링?
