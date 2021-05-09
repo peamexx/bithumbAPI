@@ -73,14 +73,21 @@ function setData() {
             td.innerHTML = item[0];
             tr.append(td);
     
-            // 심볼명
-            coinNameArr.forEach((item2) => {
+            // 심볼
+            let isOrNot = false;
+            coinNameArr.find((item2) => {
                 let td = document.createElement('td');
                 if(item2.symbol == item[0]) {
                     td.innerHTML = item2.name;
                     tr.append(td);
+                    isOrNot = true;
                 }
-            });        
+            });
+            if(!isOrNot) {
+                let td = document.createElement('td');
+                td.innerHTML = '★신규종목★';
+                tr.append(td);
+            }
     
             // 나머지 테이블
             for (let i = 0; i < 3; i++) {
